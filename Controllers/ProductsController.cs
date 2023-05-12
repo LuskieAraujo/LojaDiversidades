@@ -4,20 +4,22 @@ using LojaDiversidades.Entities;
 
 namespace LojaDiversidades.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/Produtos")]
 	[ApiController]
 	public class ProductsController : ControllerBase
 	{
+		private ProductsService servico = new ProductsService();
+
 		[HttpGet]
-		public ActionResult<IEnumerable<ProductsList>> Get()
+		public ActionResult<IEnumerable<Product>> Get()
 		{
 			try
 			{
-				return Ok(new ProductsService().ListarProdutos());
+				return Ok(servico.Listar());
 			}
 			catch (Exception)
 			{
-				return BadRequest();
+				return StatusCode(500);
 			}
 		}
 
@@ -26,7 +28,7 @@ namespace LojaDiversidades.Controllers
 		{
 			try
 			{
-				return Ok(new ProductsService().PesquisarProduto(id));
+				return Ok(servico.PesquisarProduto(id));
 			}
 			catch (Exception)
 			{
@@ -34,29 +36,42 @@ namespace LojaDiversidades.Controllers
 			}
 		}
 
-		[HttpPost]
-		public ActionResult<bool> Post([FromBody] Product produto)
+        [HttpGet("Codigo={codigo}")]
+        public ActionResult<Product> Get(string codigo)
+        {
+            try
+            {
+                return Ok(servico.PesquisarCodigo(codigo));
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+		public ActionResult<bool> Post(Product produto)
 		{
 			try
 			{
-				return Ok(new ProductsService().IncluirProduto(produto));
+				return Ok(servico.Salvar(0, produto));
 			}
 			catch (Exception)
 			{
-				return BadRequest();
+				return StatusCode(500);
 			}
 		}
 
 		[HttpPut("{id}")]
-		public ActionResult<bool> Put([FromBody] Product produto)
+		public ActionResult<bool> Put(int id, Product produto)
 		{
 			try
 			{
-				return Ok(new ProductsService().AlterarProduto(produto));
+				return Ok(servico.Salvar(id, produto));
 			}
 			catch (Exception)
 			{
-				return BadRequest();
+				return StatusCode(500);
 			}
 		}
 
@@ -65,11 +80,11 @@ namespace LojaDiversidades.Controllers
 		{
 			try
 			{
-				return Ok(new ProductsService().ExcluirProduto(id));
+				return Ok(servico.Excluir(id));
 			}
 			catch (Exception)
 			{
-				return BadRequest();
+				return StatusCode(500);
 			}
 		}
 	}

@@ -4,12 +4,12 @@ using LojaDiversidades.Entities;
 namespace LojaDiversidades.Services;
 public class ProductsService
 {
-	public List<ProductsList> ListarProdutos()
+	private ProductsRepository repositorio = new ProductsRepository();
+	public List<Product> Listar()
 	{
 		try
 		{
-
-			return new ProductsRepository().Lista();
+			return repositorio.Lista();
 		}
 		catch (Exception ex)
 		{
@@ -21,31 +21,31 @@ public class ProductsService
 	{
 		try
 		{
-			return new ProductsRepository().Pesquisa(id);
+			return repositorio.Pesquisa(id);
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex.Message);
 			return null;
 		}
-	}
-	public bool IncluirProduto(Product produto)
+    }
+    public Product PesquisarCodigo(string codigo)
+    {
+        try
+        {
+            return repositorio.PesquisaCodigo(codigo);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
+    public bool Salvar(int id,Product produto)
 	{
 		try
 		{
-			return new ProductsRepository().Salva(produto);
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine(ex.Message);
-			return false;
-		}
-	}
-	public bool AlterarProduto(Product produto)
-	{
-		try
-		{
-			return new ProductsRepository().Salva(produto);
+			return produto.Id != 0 ? repositorio.Altera(id, produto) : repositorio.Inclui(produto);
 		}
 		catch (Exception ex)
 		{
@@ -53,11 +53,11 @@ public class ProductsService
 			throw;
 		}
 	}
-	public bool ExcluirProduto(int id)
+	public bool Excluir(int id)
 	{
 		try
 		{
-			return new ProductsRepository().Exclui(id);
+			return repositorio.Exclui(id);
 		}
 		catch (Exception ex)
 		{

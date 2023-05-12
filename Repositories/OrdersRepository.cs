@@ -39,7 +39,31 @@ public class OrdersRepository
 			return false;
 		}
 	}
-	public bool IncluiPedido(Order pedido)
+	public int IncluiPedido(Order pedido)
+	{
+		try
+		{
+			return new Random().Next(1, int.MaxValue);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			return 0;
+		}
+	}
+	public List<OrderItems> ListaItensPedido(int idUsuario, int idPedido)
+	{
+		try
+		{
+			return new List<OrderItems>();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine(ex.Message);
+			return new List<OrderItems>();
+		}
+	}
+	public bool IncluiItemPedido(int idUsuario, OrderItems item)
 	{
 		try
 		{
@@ -51,7 +75,7 @@ public class OrdersRepository
 			return false;
 		}
 	}
-	public bool IncluiItemPedido(int idPedido, OrderItems item)
+	public bool ExcluiItemPedido(int idUsuario, int idPedido, int idItem)
 	{
 		try
 		{
@@ -63,7 +87,7 @@ public class OrdersRepository
 			return false;
 		}
 	}
-	public bool ExcluiItemPedido(int idPedido, int idItem)
+	public bool ExcluiListaItensPedido(int idUsuario, int idPedido)
 	{
 		try
 		{
@@ -75,7 +99,7 @@ public class OrdersRepository
 			return false;
 		}
 	}
-	public bool MudarQuantidadeItens(int idPedido, int idItem, int quantidade)
+	public bool AlteraItemPedido(int idUsuario, OrderItems item)
 	{
 		try
 		{
